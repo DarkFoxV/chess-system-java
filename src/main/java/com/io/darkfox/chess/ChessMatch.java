@@ -1,12 +1,15 @@
 package com.io.darkfox.chess;
 
 import com.io.darkfox.boardgame.Board;
+import com.io.darkfox.boardgame.Position;
+import com.io.darkfox.chess.pieces.Rook;
 
 public class ChessMatch {
     private Board board;
 
     public ChessMatch() {
         this.board = new Board(8, 8);
+        initialSetup();
     }
 
     public ChessPiece[][] getPieces(){
@@ -17,5 +20,9 @@ public class ChessMatch {
             }
         }
         return mat;
+
+    }
+    private void initialSetup(){
+        board.placePiece(new Rook(board,Color.WHITE),new Position(2,1));
     }
 }
