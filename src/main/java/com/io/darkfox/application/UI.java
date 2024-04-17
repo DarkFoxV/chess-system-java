@@ -1,7 +1,11 @@
 package com.io.darkfox.application;
 
 import com.io.darkfox.chess.ChessPiece;
+import com.io.darkfox.chess.ChessPosition;
 import com.io.darkfox.chess.Color;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class UI {
     public static final String ANSI_RESET = "\u001B[0m";
@@ -23,6 +27,17 @@ public class UI {
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
+    public static ChessPosition readChessPosition(Scanner scanner) {
+        try {
+            String line = scanner.nextLine();
+            char firstChar = line.charAt(0);
+            int row = Integer.parseInt(line.substring(1));
+            return new ChessPosition(firstChar, row);
+        }
+        catch (Exception e) {
+            throw new InputMismatchException("Invalid chess position");
+        }
+    }
     public static void printBoard(ChessPiece[][] pieces) {
         for (int i = 0; i < pieces.length; i++) {
             System.out.print((8 - i) + " ");
