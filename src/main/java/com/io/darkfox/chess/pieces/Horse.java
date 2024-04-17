@@ -4,15 +4,15 @@ import com.io.darkfox.boardgame.Board;
 import com.io.darkfox.chess.ChessPiece;
 import com.io.darkfox.chess.Color;
 
-public class King extends ChessPiece {
+public class Horse extends ChessPiece {
 
-    public King(Board board, Color color) {
-        super(board, color);
+    public Horse(Board board, Color color) {
+        super(board,color);
     }
 
     @Override
-    public String toString() {
-        return "K";
+    public String toString(){
+        return "H";
     }
 
     @Override
@@ -20,4 +20,5 @@ public class King extends ChessPiece {
         return new boolean[getBoard().getRows()][getBoard().getColumns()];
 
     }
+
 }

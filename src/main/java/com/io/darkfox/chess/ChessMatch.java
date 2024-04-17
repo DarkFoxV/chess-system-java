@@ -3,15 +3,13 @@ package com.io.darkfox.chess;
 import com.io.darkfox.boardgame.Board;
 import com.io.darkfox.boardgame.Piece;
 import com.io.darkfox.boardgame.Position;
-import com.io.darkfox.chess.pieces.King;
-import com.io.darkfox.chess.pieces.Peon;
-import com.io.darkfox.chess.pieces.Rook;
+import com.io.darkfox.chess.pieces.*;
 
 public class ChessMatch {
     private static Board board;
 
     public ChessMatch() {
-        this.board = new Board(8, 8);
+        board = new Board(8, 8);
         initialSetup();
     }
 
@@ -45,6 +43,9 @@ public class ChessMatch {
         if (!board.thereIsAPiece(sourcePosition)) {
             throw new ChessException("There is no piece at position " + sourcePosition);
         }
+        if (!board.piece(sourcePosition).isThereAnyPossibleMove()){
+            throw new ChessException("There is no possible moves for the chosen piece " + sourcePosition);
+        }
     }
 
     private void placeNewPiece(char column, int row, ChessPiece piece) {
@@ -52,9 +53,14 @@ public class ChessMatch {
     }
 
     private void initialSetup() {
-        placeNewPiece('c', 1, new Rook(board, Color.WHITE));
-        placeNewPiece('e', 1, new Rook(board, Color.WHITE));
+        placeNewPiece('b', 1, new Horse(board, Color.WHITE));
+        placeNewPiece('g', 1, new Horse(board, Color.WHITE));
+        placeNewPiece('c', 1, new Bishop(board, Color.WHITE));
+        placeNewPiece('f', 1, new Bishop(board, Color.WHITE));
+        placeNewPiece('a', 1, new Rook(board, Color.WHITE));
+        placeNewPiece('h', 1, new Rook(board, Color.WHITE));
         placeNewPiece('d', 1, new King(board, Color.WHITE));
+        placeNewPiece('e', 1, new Queen(board, Color.WHITE));
         placeNewPiece('a', 2, new Peon(board, Color.WHITE));
         placeNewPiece('b', 2, new Peon(board, Color.WHITE));
         placeNewPiece('c', 2, new Peon(board, Color.WHITE));
@@ -72,8 +78,13 @@ public class ChessMatch {
         placeNewPiece('f', 7, new Peon(board, Color.BLACK));
         placeNewPiece('g', 7, new Peon(board, Color.BLACK));
         placeNewPiece('h', 7, new Peon(board, Color.BLACK));
-        placeNewPiece('c', 8, new Rook(board, Color.BLACK));
-        placeNewPiece('e', 8, new Rook(board, Color.BLACK));
+        placeNewPiece('b', 8, new Horse(board, Color.BLACK));
+        placeNewPiece('g', 8, new Horse(board, Color.BLACK));
+        placeNewPiece('c', 8, new Bishop(board, Color.BLACK));
+        placeNewPiece('f', 8, new Bishop(board, Color.BLACK));
+        placeNewPiece('a', 8, new Rook(board, Color.BLACK));
+        placeNewPiece('h', 8, new Rook(board, Color.BLACK));
         placeNewPiece('d', 8, new King(board, Color.BLACK));
+        placeNewPiece('e', 8, new Queen(board, Color.BLACK));
     }
 }
