@@ -1,7 +1,6 @@
 package com.io.darkfox.chess;
 
 import com.io.darkfox.boardgame.Board;
-import com.io.darkfox.boardgame.Position;
 import com.io.darkfox.chess.pieces.Rook;
 
 public class ChessMatch {
@@ -12,17 +11,23 @@ public class ChessMatch {
         initialSetup();
     }
 
-    public ChessPiece[][] getPieces(){
+    public ChessPiece[][] getPieces() {
         ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()];
-        for(int i = 0; i < board.getRows(); i++){
-            for(int j = 0; j < board.getColumns(); j++){
-                mat[i][j] = (ChessPiece) board.piece(i,j);
+        for (int i = 0; i < board.getRows(); i++) {
+            for (int j = 0; j < board.getColumns(); j++) {
+                mat[i][j] = (ChessPiece) board.piece(i, j);
             }
         }
         return mat;
 
     }
-    private void initialSetup(){
-        board.placePiece(new Rook(board,Color.WHITE),new Position(2,1));
+
+    private void placeNewPiece(char column, int row, ChessPiece piece) {
+        board.placePiece(piece, new ChessPosition(column, row).toPosition());
+    }
+
+    private void initialSetup() {
+        placeNewPiece('b', 6, new Rook(board, Color.WHITE));
+        placeNewPiece('e', 8, new Rook(board, Color.WHITE));
     }
 }
