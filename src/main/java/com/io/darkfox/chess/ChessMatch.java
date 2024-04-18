@@ -5,10 +5,15 @@ import com.io.darkfox.boardgame.Piece;
 import com.io.darkfox.boardgame.Position;
 import com.io.darkfox.chess.pieces.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChessMatch {
     private byte turn;
     private Color currentPlayerColor;
     private static Board board;
+    private List<Piece> pieceOnTheBoard = new ArrayList<>();
+    private List<Piece> captured = new ArrayList<>();
 
     public ChessMatch() {
         board = new Board(8, 8);
@@ -52,9 +57,13 @@ public class ChessMatch {
         return (ChessPiece) capturedPiece;
     }
 
-    private static Piece makeMove(Position source, Position target) {
+    private Piece makeMove(Position source, Position target) {
         Piece p = board.removePiece(source);
         Piece capturedPiece = board.removePiece(target);
+        if (capturedPiece != null) {
+            pieceOnTheBoard.add(capturedPiece);
+            captured.add(capturedPiece);
+        }
         board.placePiece(p, target);
         return capturedPiece;
     }
@@ -82,6 +91,7 @@ public class ChessMatch {
     }
     private void placeNewPiece(char column, int row, ChessPiece piece) {
         board.placePiece(piece, new ChessPosition(column, row).toPosition());
+        pieceOnTheBoard.add(piece);
     }
 
     private void initialSetup() {
