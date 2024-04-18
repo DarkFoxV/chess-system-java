@@ -6,10 +6,14 @@ import com.io.darkfox.boardgame.Position;
 import com.io.darkfox.chess.pieces.*;
 
 public class ChessMatch {
+    private byte turn;
+    private Color currentPlayerColor;
     private static Board board;
 
     public ChessMatch() {
         board = new Board(8, 8);
+        turn = 1;
+        currentPlayerColor = Color.WHITE;
         initialSetup();
     }
 
@@ -24,18 +28,27 @@ public class ChessMatch {
 
     }
 
+    public byte getTurn() {
+        return turn;
+    }
+
+    public Color getCurrentPlayerColor() {
+        return currentPlayerColor;
+    }
+
     public boolean[][] possibleMoves(ChessPosition source){
         Position pos = source.toPosition();
         validateSourcePosition(pos);
         return board.piece(pos).possibleMoves();
     }
 
-    public static ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
+    public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
         Position source = sourcePosition.toPosition();
         Position target = targetPosition.toPosition();
         validateSourcePosition(source);
         validateTargetPosition(source,target);
         Piece capturedPiece = makeMove(source, target);
+        nextTurn();
         return (ChessPiece) capturedPiece;
     }
 
@@ -46,9 +59,12 @@ public class ChessMatch {
         return capturedPiece;
     }
 
-    private static void validateSourcePosition(Position sourcePosition) {
+    private void validateSourcePosition(Position sourcePosition) {
         if (!board.thereIsAPiece(sourcePosition)) {
             throw new ChessException("There is no piece at position " + sourcePosition);
+        }
+        if (currentPlayerColor != (((ChessPiece)board.piece(sourcePosition)).getColor())){
+            throw new ChessException("The chosen piece is not yours");
         }
         if (!board.piece(sourcePosition).isThereAnyPossibleMove()){
             throw new ChessException("There is no possible moves for the chosen piece " + sourcePosition);
@@ -60,7 +76,10 @@ public class ChessMatch {
             throw new ChessException("There is no possible moves for the chosen piece " + sourcePosition);
         }
     }
-
+    private void nextTurn(){
+        turn++;
+        currentPlayerColor = (currentPlayerColor == Color.WHITE) ? Color.BLACK : Color.WHITE;
+    }
     private void placeNewPiece(char column, int row, ChessPiece piece) {
         board.placePiece(piece, new ChessPosition(column, row).toPosition());
     }

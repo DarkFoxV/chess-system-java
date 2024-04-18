@@ -1,5 +1,6 @@
 package com.io.darkfox.application;
 
+import com.io.darkfox.chess.ChessMatch;
 import com.io.darkfox.chess.ChessPiece;
 import com.io.darkfox.chess.ChessPosition;
 import com.io.darkfox.chess.Color;
@@ -63,6 +64,13 @@ public class UI {
             System.out.println();
         }
         System.out.println("  a b c d e f g h");
+    }
+
+    public static void printMatch(ChessMatch match){
+        printBoard(match.getPieces());
+        System.out.println();
+        System.out.println("Turn: " + match.getTurn());
+        System.out.println("Waiting players: " + match.getCurrentPlayerColor());
     }
 
     private static void printPieces(ChessPiece piece, boolean background) {
