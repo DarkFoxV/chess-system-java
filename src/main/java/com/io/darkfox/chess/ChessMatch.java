@@ -32,7 +32,6 @@ public class ChessMatch {
             }
         }
         return mat;
-
     }
 
     public byte getTurn() {
@@ -68,29 +67,30 @@ public class ChessMatch {
             throw new ChessException("You can't put yourself in check");
         }
         check = testCheck(opponent(currentPlayerColor));
-        if(testCheckMate(opponent(currentPlayerColor))) {
-          checkMate = true;
-        }
-        else nextTurn();
+        if (testCheckMate(opponent(currentPlayerColor))) {
+            checkMate = true;
+        } else nextTurn();
         return (ChessPiece) capturedPiece;
     }
 
     private Piece makeMove(Position source, Position target) {
-        Piece p = board.removePiece(source);
+        ChessPiece p = (ChessPiece) board.removePiece(source);
+        p.increaseMoveCount();
         Piece capturedPiece = board.removePiece(target);
+        board.placePiece(p, target);
         if (capturedPiece != null) {
-            pieceOnTheBoard.add(capturedPiece);
+            pieceOnTheBoard.remove(capturedPiece);
             captured.add(capturedPiece);
         }
-        board.placePiece(p, target);
         return capturedPiece;
     }
 
     private void undoMove(Position source, Position target, Piece capturedPiece) {
-        Piece p = board.removePiece(target);
+        ChessPiece p = (ChessPiece) board.removePiece(target);
+        p.decreaseMoveCount();
         board.placePiece(p, source);
-
         if (capturedPiece != null) {
+            board.placePiece(capturedPiece, target);
             captured.remove(capturedPiece);
             pieceOnTheBoard.add(capturedPiece);
         }
@@ -125,12 +125,12 @@ public class ChessMatch {
 
     private ChessPiece king(Color color) {
         List<Piece> list = pieceOnTheBoard.stream().filter(x -> ((ChessPiece) x).getColor() == color).toList();
-        for (Piece piece : list) {
-            if (piece instanceof King) {
-                return (ChessPiece) piece;
+        for (Piece p : list) {
+            if (p instanceof King) {
+                return (ChessPiece) p;
             }
         }
-        throw new IllegalStateException("There is no King on the board ");
+        throw new IllegalStateException("There is no " + color + " king on the board");
     }
 
     private boolean testCheck(Color color) {
@@ -146,18 +146,18 @@ public class ChessMatch {
     }
 
     private boolean testCheckMate(Color color) {
-        if(!testCheck(color)){
+        if (!testCheck(color)) {
             return false;
         }
-        List<Piece> opponentPiece = pieceOnTheBoard.stream().filter(x -> ((ChessPiece) x).getColor() == opponent(color)).toList();
-        for (Piece piece : opponentPiece) {
-            boolean[][] mat = piece.possibleMoves();
-            for (int row = 0; row < board.getRows(); row++) {
-                for (int column = 0; column < board.getColumns(); column++) {
-                    if (mat[row][column]){
-                        Position source = ((ChessPiece)piece).getChessPosition().toPosition();
-                        Position target = new Position(row, column);
-                        Piece capturedPiece = makeMove(source,target);
+        List<Piece> list = pieceOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor() == color).toList();
+        for (Piece p : list) {
+            boolean[][] mat = p.possibleMoves();
+            for (int i=0; i<board.getRows(); i++) {
+                for (int j=0; j<board.getColumns(); j++) {
+                    if (mat[i][j]) {
+                        Position source = ((ChessPiece)p).getChessPosition().toPosition();
+                        Position target = new Position(i, j);
+                        Piece capturedPiece = makeMove(source, target);
                         boolean testCheck = testCheck(color);
                         undoMove(source, target, capturedPiece);
                         if (!testCheck) {

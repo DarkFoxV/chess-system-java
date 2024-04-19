@@ -1,11 +1,12 @@
 package com.io.darkfox.boardgame;
 
 public class Position {
+
     private int row;
     private int column;
 
-    public Position(int rom, int column) {
-        this.row = rom;
+    public Position(int row, int column) {
+        this.row = row;
         this.column = column;
     }
 
@@ -25,7 +26,7 @@ public class Position {
         this.column = column;
     }
 
-    public void setValue(int row, int column) {
+    public void setValues(int row, int column) {
         this.row = row;
         this.column = column;
     }
