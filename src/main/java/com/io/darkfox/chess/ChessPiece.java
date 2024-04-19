@@ -5,7 +5,7 @@ import com.io.darkfox.boardgame.Piece;
 import com.io.darkfox.boardgame.Position;
 
 public abstract class ChessPiece extends Piece {
-    private Color color;
+    private final Color color;
 
     public ChessPiece(Board board, Color color) {
         super(board);
@@ -14,6 +14,10 @@ public abstract class ChessPiece extends Piece {
 
     public Color getColor() {
         return color;
+    }
+
+    public ChessPosition getChessPosition() {
+        return ChessPosition.fromPosition(position);
     }
 
     protected boolean isThereOppenentPiece(Position pos){
