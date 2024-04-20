@@ -8,11 +8,12 @@ import com.io.darkfox.chess.Color;
 public class Knight extends ChessPiece {
 
     public Knight(Board board, Color color) {
-        super(board,color);
+        super(board, color);
+
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "N";
     }
 
@@ -52,6 +53,7 @@ public class Knight extends ChessPiece {
         if (getBoard().positionExists(p) && canMove(p)) {
             mat[p.getRow()][p.getColumn()] = true;
         }
+
         return mat;
     }
 

@@ -73,7 +73,7 @@ public class UI {
         System.out.println();
         printCapturedPiece(pieces);
         System.out.println("Turn: " + match.getTurn());
-        if(!match.isCheckMate()){
+        if(match.getCheckMate()){
             System.out.println("Waiting players: " + match.getCurrentPlayerColor());
             if (match.getCheck()){
                 System.out.println("Check");
