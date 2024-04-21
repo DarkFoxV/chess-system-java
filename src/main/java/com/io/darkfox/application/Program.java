@@ -32,9 +32,14 @@ public class Program {
                 if (capturedPiece != null) {
                     pieces.add(capturedPiece);
                 }
+                if (match.getPromoted() != null){
+                    System.out.print("Enter piece for promotion (B/N/R/Q): ");
+                    String type = scanner.nextLine();
+                    match.replacePromotedPiece(type);
+                }
 
-            } catch (ChessException | InputMismatchException che) {
-                System.out.println(che.getMessage());
+            } catch (ChessException | InputMismatchException e) {
+                System.out.println(e.getMessage());
             }
         }
         UI.cleanUI();
