@@ -17,11 +17,11 @@ public abstract class ChessPiece extends Piece {
         return color;
     }
 
-    public void increaseMoveCount(){
+    public void increaseMoveCount() {
         moveCount++;
     }
 
-    public void decreaseMoveCount(){
+    public void decreaseMoveCount() {
         moveCount--;
     }
 
@@ -38,7 +38,7 @@ public abstract class ChessPiece extends Piece {
         return p == null || p.getColor() != getColor();
     }
 
-    protected boolean isThereOppenentPiece(Position pos){
+    protected boolean isThereOppenentPiece(Position pos) {
         ChessPiece p = (ChessPiece) getBoard().piece(pos);
         return p != null && p.getColor() != color;
     }
