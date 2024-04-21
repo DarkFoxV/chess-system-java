@@ -5,7 +5,6 @@ import com.io.darkfox.boardgame.Piece;
 import com.io.darkfox.boardgame.Position;
 import com.io.darkfox.chess.pieces.*;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,8 +79,8 @@ public class ChessMatch {
         ChessPiece movedPiece = (ChessPiece) board.piece(target);
         //Promotion
         promoted = null;
-        if(movedPiece instanceof Pawn) {
-            if ((movedPiece.getColor() == Color.WHITE && target.getRow()==0) || (movedPiece.getColor() == Color.BLACK && target.getRow()==7)) {
+        if (movedPiece instanceof Pawn) {
+            if ((movedPiece.getColor() == Color.WHITE && target.getRow() == 0) || (movedPiece.getColor() == Color.BLACK && target.getRow() == 7)) {
                 promoted = (ChessPiece) board.piece(target);
                 promoted = replacePromotedPiece("Q");
             }
@@ -99,11 +98,11 @@ public class ChessMatch {
     }
 
     public ChessPiece replacePromotedPiece(String type) {
-        if(promoted==null) {
+        if (promoted == null) {
             throw new IllegalStateException("There is no piece to be promoted");
         }
-        if(!type.equals("Q") && !type.equals("N") && !type.equals("R") && !type.equals("B")) {
-            throw new InvalidParameterException("Invalid type for promotion");
+        if (!type.equals("Q") && !type.equals("N") && !type.equals("R") && !type.equals("B")) {
+            return promoted;
         }
         Position pos = promoted.getChessPosition().toPosition();
         Piece p = board.removePiece(pos);
@@ -115,11 +114,13 @@ public class ChessMatch {
         return newPiece;
     }
 
-    private ChessPiece newPiece(String type, Color color){
-        if(type.equals("Q")) return new Queen(board, color);
-        if(type.equals("N")) return new Knight(board, color);
-        if(type.equals("B")) return new Bishop(board, color);
-        else return new Rook(board, color);
+    private ChessPiece newPiece(String type, Color color) {
+        return switch (type) {
+            case "Q" -> new Queen(board, color);
+            case "N" -> new Knight(board, color);
+            case "B" -> new Bishop(board, color);
+            default -> new Rook(board, color);
+        };
     }
 
     private Piece makeMove(Position source, Position target) {
